@@ -37,7 +37,8 @@ define postgresql::conf ($ensure='present', $value=undef, $clustername='main', $
 
   $target = $operatingsystem ? {
     /Debian|Ubuntu|kFreeBSD/ => "/etc/postgresql/${pgver}/${clustername}/postgresql.conf",
-    default => fail("Implementation for '$operatingsystem' is missing, please send a patch !"),
+    /SuSE/                   => "${::postgresql::params::data_dir}/data/postgresql.conf",
+    default                  => fail("Implementation for '$operatingsystem' is missing, please send a patch !"),
   }
 
 

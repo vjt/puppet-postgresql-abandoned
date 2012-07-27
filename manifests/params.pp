@@ -2,7 +2,7 @@ class postgresql::params {
 
   $data_dir = $postgresql_data_dir ? {
     "" => $operatingsystem ? {
-           /RedHat|CentOS/ => "/var/lib/pgsql",
+           /RedHat|CentOS|SuSE/ => "/var/lib/pgsql",
            default => "/var/lib/postgresql",
     },
 

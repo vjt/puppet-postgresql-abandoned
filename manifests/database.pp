@@ -26,6 +26,7 @@ define postgresql::database(
   case $ensure {
     present: {
       exec { "Create $name postgres db":
+        path    => "/bin:/usr/bin",
         command => "createdb $ownerstring $encodingstring $name -T $template",
         user    => "postgres",
         unless  => "test \$(psql -tA -c \"SELECT count(*)=1 FROM pg_catalog.pg_database where datname='${name}';\") = t",
@@ -34,6 +35,7 @@ define postgresql::database(
     }
     absent:  {
       exec { "Remove $name postgres db":
+        path    => "/bin:/usr/bin",
         command => "dropdb $name",
         user    => "postgres",
         onlyif  => "test \$(psql -tA -c \"SELECT count(*)=1 FROM pg_catalog.pg_database where datname='${name}';\") = t",
@@ -48,6 +50,7 @@ define postgresql::database(
   # Drop database before import
   if $overwrite {
     exec { "Drop database $name before import":
+      path    => "/bin:/usr/bin",
       command => "dropdb ${name}",
       onlyif  => "psql -l | grep '$name  *|'",
       user    => "postgres",
@@ -60,6 +63,7 @@ define postgresql::database(
   if $source {
     # TODO: handle non-gziped files
     exec { "Import dump into $name postgres db":
+      path    => "/bin:/usr/bin",
       command => "zcat -f ${source} | psql ${name}",
       user    => "postgres",
       onlyif  => "test $(psql ${name} -c '\\dt' | wc -l) -eq 1",

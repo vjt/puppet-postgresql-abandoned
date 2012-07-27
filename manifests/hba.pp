@@ -86,11 +86,16 @@ define postgresql::hba (
     $lpath = undef
   }
 
+  $context = $::osfamily ? {
+    debian => "/files/etc/postgresql/${pgver}/${clustername}/",
+    suse   => "/files/${::postgresql::params::data_dir}/data/",
+  }
+
   case $ensure {
 
     'present': {
       augeas { "set pg_hba ${name}":
-        context => "/files/etc/postgresql/${pgver}/${clustername}/",
+        context => $context,
         changes => $changes,
         onlyif  => "match ${xpath} size == 0",
         notify  => Exec["reload postgresql ${pgver}"],
@@ -100,7 +105,7 @@ define postgresql::hba (
 
       if $option {
         augeas { "add option to pg_hba ${name}":
-          context => "/files/etc/postgresql/${pgver}/${clustername}/",
+          context => $context,
           changes => "set ${xpath}/method/option ${option}",
           onlyif  => "match ${xpath}/method/option size == 0",
           notify  => Exec["reload postgresql ${pgver}"],
@@ -112,7 +117,7 @@ define postgresql::hba (
 
     'absent': {
       augeas { "remove pg_hba ${name}":
-        context => "/files/etc/postgresql/${pgver}/${clustername}/",
+        context => $context,
         changes => "rm ${xpath}",
         onlyif  => "match ${xpath} size == 1",
         notify  => Exec["reload postgresql ${pgver}"],

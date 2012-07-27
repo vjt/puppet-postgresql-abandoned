@@ -15,8 +15,8 @@ class postgresql::base {
 
   package { "postgresql":
     name   => $operatingsystem ? {
-      /Debian|Ubuntu|kFreeBSD/ => "postgresql",
-      /RedHat|CentOS|Fedora/   => "postgresql-server",
+      /Debian|Ubuntu|kFreeBSD/    => "postgresql",
+      /RedHat|CentOS|Fedora|SuSE/ => "postgresql-server",
     },
     ensure => present,
     notify => undef,

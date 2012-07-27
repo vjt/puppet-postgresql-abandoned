@@ -14,7 +14,7 @@ class postgresql::debian::v8-3 {
 
   $version = "8.3"
 
-  case $lsbdistcodename {
+  case $::lsbdistcodename {
     "lenny" : {
       
       include postgresql::debian::base
@@ -34,7 +34,7 @@ class postgresql::debian::v8-3 {
 
     }
     default: {
-      fail "postgresql ${version} not available for ${operatingsystem}/${lsbdistcodename}"
+      fail "postgresql ${version} not available for ${::operatingsystem}/${::lsbdistcodename}"
     }
   }
 

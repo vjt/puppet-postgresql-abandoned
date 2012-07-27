@@ -14,7 +14,7 @@ class postgresql::debian::v8-4 {
 
   $version = "8.4"
 
-  case $lsbdistcodename {
+  case $::lsbdistcodename {
     "lenny", "squeeze", "lucid" : {
 
       include postgresql::debian::base
@@ -35,7 +35,7 @@ class postgresql::debian::v8-4 {
         command     => "/etc/init.d/postgresql reload ${version}",
       }
 
-      if $lsbdistcodename == "lenny" {
+      if $::lsbdistcodename == "lenny" {
         apt::preferences {[
           "libpq5",
           "postgresql-${version}",
@@ -44,7 +44,7 @@ class postgresql::debian::v8-4 {
           "postgresql-client-common",
           "postgresql-contrib-${version}"
           ]:
-          pin      => "release a=${lsbdistcodename}-backports",
+          pin      => "release a=${::lsbdistcodename}-backports",
           priority => "1100",
         }
       }
@@ -52,7 +52,7 @@ class postgresql::debian::v8-4 {
     }
 
     default: {
-      fail "postgresql ${version} not available for ${operatingsystem}/${lsbdistcodename}"
+      fail "postgresql ${version} not available for ${::operatingsystem}/${::lsbdistcodename}"
     }
   }
 }

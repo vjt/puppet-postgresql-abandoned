@@ -1,17 +1,17 @@
 class postgresql::v8-4 {
-  case $operatingsystem {
+  case $::operatingsystem {
     Debian: {
-      case $lsbdistcodename {
+      case $::lsbdistcodename {
         lenny,squeeze : { include postgresql::debian::v8-4 }
-        default:        { fail "postgresql 8.4 not available for ${operatingsystem}/${lsbdistcodename}"}
+        default:        { fail "postgresql 8.4 not available for ${::operatingsystem}/${::lsbdistcodename}"}
       }
     }
     Ubuntu: {
-      case $lsbdistcodename {
+      case $::lsbdistcodename {
         lucid :  { include postgresql::debian::v8-4 }
-        default: { fail "postgresql 8.4 not available for ${operatingsystem}/${lsbdistcodename}"}
+        default: { fail "postgresql 8.4 not available for ${::operatingsystem}/${::lsbdistcodename}"}
       }
     }
-    default: { notice "Unsupported operatingsystem ${operatingsystem}" }
+    default: { notice "Unsupported operatingsystem ${::operatingsystem}" }
   }
 }

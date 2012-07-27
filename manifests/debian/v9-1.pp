@@ -14,7 +14,7 @@ class postgresql::debian::v9-1 {
 
   $version = "9.1"
 
-  case $lsbdistcodename {
+  case $::lsbdistcodename {
     squeeze: {
 
       include postgresql::debian::base
@@ -43,13 +43,13 @@ class postgresql::debian::v9-1 {
         "postgresql-client-common",
         "postgresql-contrib-${version}"
         ]:
-        pin      => "release a=${lsbdistcodename}-backports",
+        pin      => "release a=${::lsbdistcodename}-backports",
         priority => "1100",
       }
     }
 
     default: {
-      fail "${name} not available for ${operatingsystem}/${lsbdistcodename}"
+      fail "${name} not available for ${::operatingsystem}/${::lsbdistcodename}"
     }
   }
 }
